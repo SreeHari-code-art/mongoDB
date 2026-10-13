@@ -1,0 +1,18 @@
+// Insert a single document
+db.students.insertOne({
+  name: "SpongeBob",
+  age: 30,
+  gpa: 3.2,
+  isEnrolled: true,
+  registerDate: new Date(),
+});
+
+// Insert multiple documents
+db.students.insertMany([
+  { name: "Patrick", age: 37, gpa: 1.5, isEnrolled: false },
+  { name: "Sandy", age: 27, gpa: 4.0, isEnrolled: true },
+  { name: "Squidward", age: 45, gpa: 2.0, isEnrolled: false },
+]);
+
+
+db.students.find({ name: { $nin: ["Patrick", "Squidward"] } });
