@@ -179,3 +179,23 @@ async function main() {
         enrolledStudentIds: [student3Id, student5Id]
       }
     ]);
+
+    // =========================================================================
+    // TASK 3: QUERIES & PAGINATION
+    // =========================================================================
+    console.log('\n--- Task 3: Query Execution ---');
+
+    // Query 1: Students with grade "A" in CS101
+    const gradeAStudents = await studentsCol.find({
+      academicRecord: { $elemMatch: { courseCode: 'CS101', grade: 'A' } }
+    }).toArray();
+    console.log('Students with Grade A in CS101:', gradeAStudents.map(s => s.name));
+
+    // Query 2: Pagination (Page 2, 2 items per page)
+    const paginatedStudents = await studentsCol.find()
+      .sort({ gpa: -1 })
+      .skip(2)
+      .limit(2)
+      .toArray();
+    console.log('Paginated Students (Page 2):', paginatedStudents.map(s => ({ name: s.name, gpa: s.gpa })));
+
