@@ -209,3 +209,32 @@ async function main() {
 
     const analyticsResult = await studentsCol.aggregate(analyticsPipeline).toArray();
     console.log('Enrollment Analytics:', analyticsResult);
+
+    // =========================================================================
+    // TASK 5: INDEXES & ATOMIC UPDATES
+    // =========================================================================
+    console.log('\n--- Task 5: Indexing & Document Update ---');
+
+    // Create Compound Index
+    await studentsCol.createIndex({ isEnrolled: 1, gpa: -1 });
+    console.log('Compound Index on (isEnrolled, gpa) created.');
+
+    // Atomic Push to Array & GPA Update
+    await studentsCol.updateOne(
+      { studentNumber: 'STU-101' },
+      {
+        $push: { academicRecord: { courseCode: 'DS201', semester: 'Fall 2024', grade: 'A' } },
+        $set: { gpa: 3.9 }
+      }
+    );
+    console.log("Updated STU-101's GPA to 3.9 and appended new course record.");
+
+  } catch (error) {
+    console.error('Execution Error:', error);
+  } finally {
+    await client.close();
+    console.log('\nDatabase connection closed.');
+  }
+}
+
+main();
