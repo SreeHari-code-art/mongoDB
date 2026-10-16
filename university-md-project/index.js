@@ -179,3 +179,33 @@ async function main() {
         enrolledStudentIds: [student3Id, student5Id]
       }
     ]);
+
+
+
+       // =========================================================================
+    // TASK 4: AGGREGATION PIPELINE
+    // =========================================================================
+    console.log('\n--- Task 4: Aggregation Pipeline ---');
+
+    const analyticsPipeline = [
+      {
+        $group: {
+          _id: '$isEnrolled',
+          totalStudents: { $sum: 1 },
+          avgGpa: { $avg: '$gpa' },
+          maxGpa: { $max: '$gpa' }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          isEnrolled: '$_id',
+          totalStudents: 1,
+          averageGpa: { $round: ['$avgGpa', 2] },
+          highestGpa: '$maxGpa'
+        }
+      }
+    ];
+
+    const analyticsResult = await studentsCol.aggregate(analyticsPipeline).toArray();
+    console.log('Enrollment Analytics:', analyticsResult);
