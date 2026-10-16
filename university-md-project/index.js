@@ -19,3 +19,35 @@ async function main() {
       await db.collection(col.name).drop();
     }
 
+    //================================================
+    // task-1: schema validation & collection creation
+    //================================================
+
+    console.log('n--- TASK 1: SCHEMA VALIDATION & COLLECTION CREATION ---');
+
+    await db.createCollection('students',{
+      validator:{
+        $jsonSchema:{
+          bsonType:'object',
+          required:['studentNumber','name','gpa', 'isEneolled'],
+          properties:{
+            studentNumber:{bsonType:'string'},
+            name:{bsonType:'string'},
+            gpa:{
+              bsonType:['double','init'],
+              minimum:0.0,
+              maximum:4.0
+          },
+          isEnrolled:{bsonType:'bool'}
+        }
+      }
+      }
+    });
+
+    const studentsCol = db.collection('students');
+    const departmentsCol = db.collection('departments');
+    const instructorCol = db.collection('instructors');
+    const coursesCol = db.collection('courses');
+
+
+
