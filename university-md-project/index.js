@@ -51,3 +51,20 @@ async function main() {
 
 
 
+    //===========================================
+    //task 2 :data population
+    //===========================================
+
+    console.log('--- task 2:population documents ---');
+
+    // 1. insert departments
+
+    const csDepartId = new ObjectId();
+    const dsDepartId = new ObjectId();
+    await departmentsCol.insertMany([
+      {
+        _id:csDepartId,deptCode:'CS',name:'computer sinece'}
+      {
+        _id i
+      }
+    ])
